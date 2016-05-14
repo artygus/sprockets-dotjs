@@ -1,6 +1,6 @@
 require 'sprockets'
-require 'tilt/template'
-require 'v8'
+require 'tilt'
+require 'execjs'
 
 module Sprockets
   module DotJS
@@ -12,12 +12,11 @@ module Sprockets
       def prepare
       end
 
-      def render(scope=Object.new, locals={}, &block)
+      def render(scope, locals, &block)
         dotjs_lib = open(::File.join(::File.dirname(__FILE__), '..', '..', 'support', 'doT.js')).read
 
-        context = ::V8::Context.new
-        context.eval(dotjs_lib)
-        context['doT']['compile'].call(data).to_s
+        context = ExecJS.compile(dotjs_lib)
+        context.eval("doT.template(#{data.inspect}, undefined, undefined).toString()")
       end
     end
   end

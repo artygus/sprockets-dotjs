@@ -17,5 +17,6 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "sprockets"
-  s.add_dependency "therubyracer"
+  s.add_dependency "execjs"
+  s.add_dependency "tilt"
 end
